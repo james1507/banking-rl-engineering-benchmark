@@ -1,0 +1,21 @@
+docker compose run --rm -T --entrypoint ruff tools check src tests scripts benchmark
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-57547993ab1b Creating 
+ Container banking-rl-lab-tools-run-57547993ab1b Created 
+All checks passed!
+docker compose run --rm -T --entrypoint ruff tools format --check src tests scripts benchmark alembic
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-b8ef0b634d41 Creating 
+ Container banking-rl-lab-tools-run-b8ef0b634d41 Created 
+55 files already formatted
+docker compose run --rm -T --entrypoint mypy tools
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-64ff694f909b Creating 
+ Container banking-rl-lab-tools-run-64ff694f909b Created 
+Success: no issues found in 27 source files

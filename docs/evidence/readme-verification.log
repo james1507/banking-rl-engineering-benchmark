@@ -1,0 +1,59 @@
+docker compose run --rm -T --entrypoint ruff tools check src tests scripts benchmark
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-bbbbfbd9a5d4 Creating 
+ Container banking-rl-lab-tools-run-bbbbfbd9a5d4 Created 
+All checks passed!
+docker compose run --rm -T --entrypoint ruff tools format --check src tests scripts benchmark alembic
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-58a8e4899a74 Creating 
+ Container banking-rl-lab-tools-run-58a8e4899a74 Created 
+54 files already formatted
+docker compose run --rm -T --entrypoint mypy tools
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-70d1704f9361 Creating 
+ Container banking-rl-lab-tools-run-70d1704f9361 Created 
+Success: no issues found in 27 source files
+docker compose run --rm -T tools scripts/run_tests.py -q --junitxml=artifacts/tests.xml
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-2dd9c9fae7f1 Creating 
+ Container banking-rl-lab-tools-run-2dd9c9fae7f1 Created 
+..............................................................           [100%]
+=============================== warnings summary ===============================
+../app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+62 passed, 1 warning in 11.82s
+docker compose run --rm -T tools -m banking_lab.cli reconcile
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-58c24990cfd4 Creating 
+ Container banking-rl-lab-tools-run-58c24990cfd4 Created 
+{
+  "id": "892f4bd7-55a6-4f69-8d97-ee80704a88db",
+  "started_at": "2026-11-12T03:24:11.810555+00:00",
+  "ended_at": "2026-11-12T03:24:11.833959+00:00",
+  "schema_revision": "0002",
+  "checked_through": "2026-11-12T03:24:11.810555+00:00",
+  "status": "PASS",
+  "counts": {
+    "accounts": 4,
+    "transfers": 4,
+    "journal_groups": 4,
+    "ledger_postings": 8,
+    "idempotency_records": 4,
+    "outbox_events": 4
+  },
+  "findings": [],
+  "invariant_violations": 0
+}

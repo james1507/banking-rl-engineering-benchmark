@@ -70,6 +70,9 @@ Actual local runs, 12 November 2026. Hardware: Apple M2 Pro/16 GiB; Docker Deskt
 | Evidence | What executed |
 |---|---|
 | [final-core.log](final-core.log) | make ci: Ruff/format, strict mypy, application tests and reconciliation |
+| [readme-tests.xml](readme-tests.xml), [readme-verification.log](readme-verification.log) | Fresh README verification: all 62 pytest cases; complete IDs in [catalogue](../test-catalogue.md) |
+| [reviewer reports](reviewer/), [screenshots and provenance](../assets/screenshots/README.md) | Seven static reports derived from recorded evidence; actual browser captures, plus live Swagger |
+| [readme-static.log](readme-static.log), [readme-assets-check.log](readme-assets-check.log) | Documentation helper lint/format/type checks; local links, eight embedded images and provenance hashes verified |
 | [validation-matrix.json](validation-matrix.json), [reports](challenges/) | 56 expected candidate verdicts, task version 1.0.2: 3 tasks, 5 seeds, 8 negative controls, optimistic and lock-only alternatives |
 | [initial-validation](initial-validation/) | Preserved failed first matrix exposing PID-local partial control weakness |
 | [pre-fairness-validation](pre-fairness-validation/) | Preserved successful 55-run version 1.0.1 matrix before scheduler fairness fix |

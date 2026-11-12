@@ -1,4 +1,9 @@
 # Changelog
+## Documentation evidence update — 2026-11-12
+- Expanded English/Vietnamese READMEs with API walkthroughs, architecture, case-by-case expectations, incident evidence, measured profiles and explicit scope limits.
+- Added eight real browser screenshots, seven stdlib-generated evidence reports, complete 62-case catalogue and dated JUnit/log/provenance sources.
+- Reran make ci: 62 tests passed, zero failures/errors/skips; corrected Swagger instructions to use operation-level authorization headers.
+
 ## 0.1.0 (local development)
 - New synthetic banking/RL lab; verification checkpoints in docs/implementation-plan.md.
 - P0 transactional core, immutable ledger guards, rotating authentication, concurrency/crash checks and independent reconciliation.

@@ -1,0 +1,62 @@
+{
+  "application_source_revision_at_test_run": "2dc3f05e4492896bc2a7eaf32ba992edaef0adee",
+  "method": "Browser screenshots; report pages derived from committed JUnit/JSON/log evidence",
+  "images": [
+    {
+      "file": "swagger.jpg",
+      "source": "http://127.0.0.1:8010/docs",
+      "captured_at_utc": "2026-11-12T03:28:30.169878+00:00",
+      "sha256": "18090bde4a7d7ee35ff221d4f56e09d7336027aeb48f7620161af7dfc4aadd87",
+      "bytes": 72673
+    },
+    {
+      "file": "test-summary.jpg",
+      "source": "docs/evidence/reviewer/test-summary.html",
+      "captured_at_utc": "2026-11-12T03:27:29.495859+00:00",
+      "sha256": "08a47e15322fedb0cc417701a3288ef47dfdd6dbb4d458e60008c6cc64c2bffc",
+      "bytes": 90027
+    },
+    {
+      "file": "money-cases.jpg",
+      "source": "docs/evidence/reviewer/money-cases.html",
+      "captured_at_utc": "2026-11-12T03:27:52.182666+00:00",
+      "sha256": "260f24c58cff11c154c539dd0e0764ff6594b078abe7438818e731959dfe680c",
+      "bytes": 137932
+    },
+    {
+      "file": "security-cases.jpg",
+      "source": "docs/evidence/reviewer/security-cases.html",
+      "captured_at_utc": "2026-11-12T03:27:52.392907+00:00",
+      "sha256": "710ab5ad407aa250825657b8f16f5e0cf38283a4f626f50a544143036105fdd9",
+      "bytes": 118834
+    },
+    {
+      "file": "worker-cases.jpg",
+      "source": "docs/evidence/reviewer/worker-cases.html",
+      "captured_at_utc": "2026-11-12T03:27:52.574571+00:00",
+      "sha256": "c1a29dad13d982f178e9aa1149e404896712f8dab936e309f563dbffceb9b193",
+      "bytes": 76327
+    },
+    {
+      "file": "domain-cases.jpg",
+      "source": "docs/evidence/reviewer/domain-cases.html",
+      "captured_at_utc": "2026-11-12T03:28:02.449817+00:00",
+      "sha256": "40350d166bb243ba24cadd3167887f14cc3fc6c4e94752765aeb2d42ad4310a7",
+      "bytes": 80676
+    },
+    {
+      "file": "rl-results.jpg",
+      "source": "docs/evidence/reviewer/rl-results.html",
+      "captured_at_utc": "2026-11-12T03:28:03.679735+00:00",
+      "sha256": "9ab5cd42339df3a8b7030fa96843cfe971a9105b1998f0fbe6d6a256121d928a",
+      "bytes": 110767
+    },
+    {
+      "file": "operations.jpg",
+      "source": "docs/evidence/reviewer/operations.html",
+      "captured_at_utc": "2026-11-12T03:28:03.881638+00:00",
+      "sha256": "8593e411a355864e0cd090a30d2786c7a06b91be7a75994bfe47dd19d1ded883",
+      "bytes": 118633
+    }
+  ]
+}

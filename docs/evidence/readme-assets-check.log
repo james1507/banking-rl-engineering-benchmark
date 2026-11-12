@@ -1,0 +1,3 @@
+PASS: all local Markdown links and static report links resolve.
+PASS: English and Vietnamese READMEs each embed all eight JPEG screenshots; code fences balanced.
+PASS: all eight image SHA-256 hashes and byte counts match provenance manifest.
