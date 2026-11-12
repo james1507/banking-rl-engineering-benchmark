@@ -1,0 +1,309 @@
+docker compose run --rm -T tools scripts/run_tests.py -q --junitxml=artifacts/tests.xml
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-33bf6c7f0a4c Creating 
+ Container banking-rl-lab-tools-run-33bf6c7f0a4c Created 
+...............F.FF..........................                            [100%]
+=================================== FAILURES ===================================
+____________________ test_equal_timestamp_pages_and_tamper _____________________
+
+self = <sqlalchemy.engine.base.Connection object at 0xffff8f1b3b00>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0xffff8f102ff0>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0xffff8f1b3530>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0xffff8f1b1640>
+parameters = [{'actor': UUID('362f7fc6-7df5-568a-a7a1-3b95a037938f'), 'id': 'fc643569-ee5d-5c2a-9d21-e86c206dfe1d'}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+    
+            if self._echo:
+                self._log_info(str_statement)
+    
+                stats = context._get_cache_stats()
+    
+                self._log_parameters(
+                    effective_parameters, stats, ismulti=context.executemany
+                )
+    
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1977: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=db user=lab_app database=lab_test_d6e2d0e0d17b46deab121d4bcd9f2f71) at 0xffff8f2b1d90>
+query = 'SELECT id,account_type,currency,status,balance_minor,created_at FROM accounts WHERE owner_user_id=%(actor)s AND (%(id)s IS NULL OR id=CAST(%(id)s AS uuid)) ORDER BY id'
+params = {'actor': UUID('362f7fc6-7df5-568a-a7a1-3b95a037938f'), 'id': 'fc643569-ee5d-5c2a-9d21-e86c206dfe1d'}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.AmbiguousParameter: could not determine data type of parameter $2
+E           LINE 1: ...ated_at FROM accounts WHERE owner_user_id=$1 AND ($2 IS NULL...
+E                                                                        ^
+
+/app/.venv/lib/python3.12/site-packages/psycopg/cursor.py:117: AmbiguousParameter
+
+The above exception was the direct cause of the following exception:
+
+db = (Engine(postgresql+psycopg://lab_app:***@db:5432/lab_test_d6e2d0e0d17b46deab121d4bcd9f2f71), Engine(postgresql+psycopg://lab_owner:***@db:5432/lab_test_d6e2d0e0d17b46deab121d4bcd9f2f71))
+fixture = {'alice': UUID('362f7fc6-7df5-568a-a7a1-3b95a037938f'), 'bob': UUID('1e549e3e-525c-5e3f-bc36-925e38fae49a'), 'admin': UUID('dcd7e086-1fe6-54be-b99d-c3ce1d9a9731'), 'alice_account': UUID('fc643569-ee5d-5c2a-9d21-e86c206dfe1d'), ...}
+
+    def test_equal_timestamp_pages_and_tamper(db,fixture):
+        clock=lambda:datetime(2026,1,1,tzinfo=UTC)
+        for n in range(23):
+            TransferService(db[0],clock=clock).create(fixture["alice"],command(fixture,1),f"page-key-{n:04}","page")
+        svc=HistoryService(db[0],"cursor-secret")
+        ids=[]; cursor=None
+        while True:
+>           page=svc.page(fixture["alice"],account=fixture["alice_account"],limit=5,cursor=cursor)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/integration/test_money.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/banking_lab/application/history.py:55: in page
+    self.accounts(actor, account)
+src/banking_lab/application/history.py:22: in accounts
+    rows = [dict(row) for row in c.execute(text("SELECT id,account_type,currency,status,balance_minor,created_at FROM accounts WHERE owner_user_id=:actor AND (:id IS NULL OR id=CAST(:id AS uuid)) ORDER BY id"),
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1494: in execute
+    return meth(
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:534: in _execute_on_connection
+    return connection._execute_clauseelement(
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1714: in _execute_clauseelement
+    ret = self._execute_context(
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1868: in _execute_context
+    return self._exec_single_context(
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1996: in _exec_single_context
+    self._handle_dbapi_exception(
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:2351: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1977: in _exec_single_context
+    self.dialect.do_execute(
+/app/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=db user=lab_app database=lab_test_d6e2d0e0d17b46deab121d4bcd9f2f71) at 0xffff8f2b1d90>
+query = 'SELECT id,account_type,currency,status,balance_minor,created_at FROM accounts WHERE owner_user_id=%(actor)s AND (%(id)s IS NULL OR id=CAST(%(id)s AS uuid)) ORDER BY id'
+params = {'actor': UUID('362f7fc6-7df5-568a-a7a1-3b95a037938f'), 'id': 'fc643569-ee5d-5c2a-9d21-e86c206dfe1d'}
+prepare = None, binary = None
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.ProgrammingError: (psycopg.errors.AmbiguousParameter) could not determine data type of parameter $2
+E           LINE 1: ...ated_at FROM accounts WHERE owner_user_id=$1 AND ($2 IS NULL...
+E                                                                        ^
+E           [SQL: SELECT id,account_type,currency,status,balance_minor,created_at FROM accounts WHERE owner_user_id=%(actor)s AND (%(id)s IS NULL OR id=CAST(%(id)s AS uuid)) ORDER BY id]
+E           [SQL parameters hidden due to hide_parameters=True]
+E           (Background on this error at: https://sqlalche.me/e/21/f405)
+
+/app/.venv/lib/python3.12/site-packages/psycopg/cursor.py:117: ProgrammingError
+______________________________ test_api_contract _______________________________
+
+client = <starlette.testclient.TestClient object at 0xffff8f1cea50>
+fixture = {'alice': UUID('362f7fc6-7df5-568a-a7a1-3b95a037938f'), 'bob': UUID('1e549e3e-525c-5e3f-bc36-925e38fae49a'), 'admin': UUID('dcd7e086-1fe6-54be-b99d-c3ce1d9a9731'), 'alice_account': UUID('fc643569-ee5d-5c2a-9d21-e86c206dfe1d'), ...}
+alice_headers = {'Authorization': 'Bearer [REDACTED_JWT]'}
+
+>   ???
+E   AssertionError: assert 1 == 2
+E    +  where 1 = len({'error': {'code': 'TRANSIENT_DATABASE_ERROR', 'message': 'Database unavailable; retry with the same key.', 'request_id': '2935023b-d84a-40e3-bfd9-23a9000db9cf', 'details': {}}})
+E    +    where {'error': {'code': 'TRANSIENT_DATABASE_ERROR', 'message': 'Database unavailable; retry with the same key.', 'request_id': '2935023b-d84a-40e3-bfd9-23a9000db9cf', 'details': {}}} = json()
+E    +      where json = <Response [503 Service Unavailable]>.json
+E    +        where <Response [503 Service Unavailable]> = get('/api/v1/accounts', headers={'Authorization': 'Bearer [REDACTED_JWT]'})
+E    +          where get = <starlette.testclient.TestClient object at 0xffff8f1cea50>.get
+
+tests/security/test_api.py:19: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+{"timestamp": "2026-11-12T01:50:00.426380+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "cb8a5030-a664-416b-97e4-9ccace6099c2"}
+{"timestamp": "2026-11-12T01:50:00.478823+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "cb8a5030-a664-416b-97e4-9ccace6099c2", "route": "/api/v1/auth/login", "duration_ms": 52.52, "status": 200}
+----------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-11-12T01:50:00.480559+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "786a857d-77bc-4c42-90e2-1cd946ce6b0b"}
+{"timestamp": "2026-11-12T01:50:00.481568+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "786a857d-77bc-4c42-90e2-1cd946ce6b0b", "route": "/health/live", "duration_ms": 0.96, "status": 200}
+{"timestamp": "2026-11-12T01:50:00.482510+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "0b3d8500-49c6-41a4-b50b-7bdbd7fb9740"}
+{"timestamp": "2026-11-12T01:50:00.484286+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "0b3d8500-49c6-41a4-b50b-7bdbd7fb9740", "route": "/health/ready", "duration_ms": 1.76, "status": 200}
+{"timestamp": "2026-11-12T01:50:00.485086+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "750784b3-79bb-466e-a345-de9626fbc815"}
+{"timestamp": "2026-11-12T01:50:00.486978+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "750784b3-79bb-466e-a345-de9626fbc815", "route": "/api/v1/accounts", "duration_ms": 0.64, "status": 401}
+{"timestamp": "2026-11-12T01:50:00.487692+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "2935023b-d84a-40e3-bfd9-23a9000db9cf"}
+{"timestamp": "2026-11-12T01:50:00.490571+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "2935023b-d84a-40e3-bfd9-23a9000db9cf", "route": "/api/v1/accounts", "duration_ms": 2.86, "status": 503}
+------------------------------ Captured log call -------------------------------
+INFO     banking_lab:main.py:48 request.start
+INFO     banking_lab:main.py:89 request.end
+INFO     banking_lab:main.py:48 request.start
+INFO     banking_lab:main.py:89 request.end
+INFO     banking_lab:main.py:48 request.start
+INFO     banking_lab:main.py:89 request.end
+INFO     banking_lab:main.py:48 request.start
+INFO     banking_lab:main.py:89 request.end
+____________________________ test_bola_every_object ____________________________
+
+client = <starlette.testclient.TestClient object at 0xffff8ed5aba0>
+fixture = {'alice': UUID('362f7fc6-7df5-568a-a7a1-3b95a037938f'), 'bob': UUID('1e549e3e-525c-5e3f-bc36-925e38fae49a'), 'admin': UUID('dcd7e086-1fe6-54be-b99d-c3ce1d9a9731'), 'alice_account': UUID('fc643569-ee5d-5c2a-9d21-e86c206dfe1d'), ...}
+alice_headers = {'Authorization': 'Bearer [REDACTED_JWT]'}
+
+    assert (
+        client.get("/api/v1/transfers/" + first.json()["id"], headers=alice_headers).status_code
+        == 200
+    )
+>   assert client.get(
+        ^^^^^^^^^^^^^^^
+        "/api/v1/accounts/" + str(fixture["alice_account"]) + "/statement", headers=alice_headers
+    ).json()["items"]
+E   assert (503 == 404)
+E    +  where 503 = <Response [503 Service Unavailable]>.status_code
+
+tests/security/test_api.py:35: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+{"timestamp": "2026-11-12T01:50:00.743151+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "2dd2e8aa-64f2-44a8-9ca8-4a5c6f89f9ea"}
+{"timestamp": "2026-11-12T01:50:00.922714+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "2dd2e8aa-64f2-44a8-9ca8-4a5c6f89f9ea", "route": "/api/v1/auth/login", "duration_ms": 179.57, "status": 200}
+------------------------------ Captured log setup ------------------------------
+INFO     banking_lab:main.py:48 request.start
+INFO     banking_lab:main.py:89 request.end
+----------------------------- Captured stdout call -----------------------------
+{"timestamp": "2026-11-12T01:50:00.930964+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "0257e391-90cc-4f61-ba73-d2fe4ae41f52"}
+{"timestamp": "2026-11-12T01:50:00.945840+00:00", "severity": "INFO", "service": "banking-lab", "operation": "http", "request_id": "0257e391-90cc-4f61-ba73-d2fe4ae41f52", "route": "/api/v1/accounts/{account_id}", "duration_ms": 14.62, "status": 503}
+------------------------------ Captured log call -------------------------------
+INFO     banking_lab:main.py:48 request.start
+INFO     banking_lab:main.py:89 request.end
+=============================== warnings summary ===============================
+../app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/integration/test_money.py::test_equal_timestamp_pages_and_tamper
+FAILED tests/security/test_api.py::test_api_contract - AssertionError: assert...
+FAILED tests/security/test_api.py::test_bola_every_object - assert (503 == 404)
+3 failed, 42 passed, 1 warning in 10.09s
+
+make: *** [test] Error 1

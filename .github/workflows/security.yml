@@ -1,0 +1,14 @@
+name: Dependency audit
+on:
+  workflow_dispatch:
+  schedule: [{cron: '0 4 * * 1'}]
+permissions: {contents: read}
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: make up security-check
+      - run: docker compose down -v
+        if: always()

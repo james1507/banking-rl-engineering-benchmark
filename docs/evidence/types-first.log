@@ -1,0 +1,14 @@
+docker compose run --rm -T --entrypoint mypy tools
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-319389708d18 Creating 
+ Container banking-rl-lab-tools-run-319389708d18 Created 
+src/banking_lab/config.py:22: error: Missing named argument "jwt_secret" for "Settings"  [call-arg]
+src/banking_lab/infrastructure/db.py:51: error: Returning Any from function declared to return "bool"  [no-any-return]
+src/banking_lab/application/auth.py:91: error: Incompatible types in assignment (expression has type "Literal[False]", variable has type "Literal[True]")  [assignment]
+src/banking_lab/cli.py:48: error: Skipping analyzing "banking_lab.infrastructure.worker": module is installed, but missing library stubs or py.typed marker  [import-untyped]
+src/banking_lab/cli.py:48: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+Found 4 errors in 4 files (checked 22 source files)
+
+make: *** [typecheck] Error 1

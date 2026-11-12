@@ -1,0 +1,23 @@
+name: Challenge integrity
+on:
+  pull_request:
+  workflow_dispatch:
+  schedule: [{cron: '25 2 * * *'}]
+permissions: {contents: read}
+jobs:
+  challenge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix: {task: [RL-01, RL-02, RL-03]}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - run: make up
+      - run: python3 -m benchmark.cli validate --task ${{ matrix.task }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: '${{ matrix.task }}-results', path: artifacts/}
+      - run: docker compose down -v
+        if: always()

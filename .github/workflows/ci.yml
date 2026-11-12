@@ -1,0 +1,16 @@
+name: Core correctness
+on: [push, pull_request, workflow_dispatch]
+permissions: {contents: read}
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: make up migrate seed ci
+      - run: make security-check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: core-evidence, path: artifacts/}
+      - run: docker compose down -v
+        if: always()
