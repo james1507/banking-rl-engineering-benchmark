@@ -1,0 +1,16 @@
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-03635bbffe8d Creating 
+ Container banking-rl-lab-tools-run-03635bbffe8d Created 
+{"timestamp": "2026-11-12T02:43:45.786144+00:00", "severity": "INFO", "service": "banking-lab", "operation": "outbox.published", "event": "outbox.published", "trace_id": "a1de8b4573206884d5260976397816fb", "span_id": "77ebc11762045c47", "event_id": "dc76fe85-b97b-486a-b942-ab7bf07ab910", "retry_count": 2}
+{"timestamp": "2026-11-12T02:43:45.794877+00:00", "severity": "INFO", "service": "banking-lab", "operation": "outbox.published", "event": "outbox.published", "trace_id": "9138a8c26d611b25419dff498d6095da", "span_id": "01616a78b8d63e34", "event_id": "215affa4-e5d4-4314-82f7-8e8380b78dd6", "retry_count": 1}
+{"timestamp": "2026-11-12T02:43:45.800531+00:00", "severity": "INFO", "service": "banking-lab", "operation": "outbox.published", "event": "outbox.published", "trace_id": "88fb65b1b33fb3ccbf31f7a93c2a24ff", "span_id": "f46edc6f9854f505", "event_id": "f6a32a09-afb5-4946-a19d-7c09afc0278f", "retry_count": 1}
+.
+=============================== warnings summary ===============================
+../app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 passed, 1 warning in 1.64s

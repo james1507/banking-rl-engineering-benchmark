@@ -1,0 +1,14 @@
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-faee34bcf4c3 Creating 
+ Container banking-rl-lab-tools-run-faee34bcf4c3 Created 
+{"id": "5860ddc5-9668-4790-bd0c-b9b13ad50bdf", "started_at": "2026-11-12T02:43:19.675505+00:00", "ended_at": "2026-11-12T02:43:19.681270+00:00", "schema_revision": "0002", "checked_through": "2026-11-12T02:43:19.675505+00:00", "status": "FAIL", "counts": {"accounts": 4, "transfers": 3, "journal_groups": 3, "ledger_postings": 6, "idempotency_records": 3, "outbox_events": 3}, "findings": [{"code": "BALANCE_DRIFT", "severity": "HIGH", "entity_id": "fc643569-ee5d-5c2a-9d21-e86c206dfe1d"}], "invariant_violations": 1}
+.
+=============================== warnings summary ===============================
+../app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /app/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 passed, 1 warning in 0.91s

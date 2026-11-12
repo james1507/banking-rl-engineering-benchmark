@@ -1,0 +1,19 @@
+{
+  "scenario": "INC-02",
+  "type": "simulated incident",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "-m",
+    "benchmark.cli",
+    "run",
+    "--task",
+    "RL-02",
+    "--mode",
+    "golden"
+  ],
+  "started_at": "2026-11-12T02:42:14.829581+00:00",
+  "ended_at": "2026-11-12T02:42:36.110960+00:00",
+  "status": "PASS",
+  "exit_code": 0,
+  "log": "artifacts/scenarios/INC-02.log"
+}

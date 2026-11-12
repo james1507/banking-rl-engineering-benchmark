@@ -1,0 +1,108 @@
+python3 scripts/bootstrap.py
+Local secrets ready in .env; demo password stays there.
+docker compose --profile worker up --build -d --wait api worker
+ Image banking-rl-lab:local Building 
+ Image banking-rl-lab:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.10kB done
+#1 DONE 0.0s
+
+#2 [migrate internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 571B done
+#2 DONE 0.0s
+
+#3 [migrate internal] load metadata for docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 0.1s
+
+#4 [migrate internal] load .dockerignore
+#4 transferring context: 127B done
+#4 DONE 0.0s
+
+#5 [migrate 1/7] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.0s done
+#5 DONE 0.0s
+
+#6 [migrate internal] load build context
+#6 transferring context: 194.07kB 0.0s done
+#6 DONE 0.0s
+
+#7 [api 3/7] WORKDIR /app
+#7 CACHED
+
+#8 [api 2/7] RUN pip install --no-cache-dir uv==0.13.7
+#8 CACHED
+
+#9 [api 4/7] COPY pyproject.toml uv.lock ./
+#9 CACHED
+
+#10 [migrate 5/7] RUN uv sync --locked --all-extras --no-install-project
+#10 CACHED
+
+#11 [api 6/7] COPY . .
+#11 DONE 0.1s
+
+#12 [migrate 7/7] RUN uv sync --locked --all-extras && useradd --uid 1000 --create-home lab && chown -R lab:lab /app
+#12 0.198 Resolved 79 packages in 1ms
+#12 0.220    Building banking-rl-engineering-benchmark @ file:///app
+#12 1.812       Built banking-rl-engineering-benchmark @ file:///app
+#12 1.814 Prepared 1 package in 1.59s
+#12 1.816 Installed 1 package in 1ms
+#12 1.816  + banking-rl-engineering-benchmark==0.1.0 (from file:///app)
+#12 DONE 6.9s
+
+#13 [api] exporting to image
+#13 exporting layers
+#13 exporting layers 4.7s done
+#13 exporting manifest sha256:0c87c3ece0d5f64924fb4c420906c74eed7fd4721d8ca1e87fbf4ae24dadc4bd 0.0s done
+#13 exporting config sha256:731c3ab0a6945446c7e0f8e73589b429101b3acd03a81d501bcc4039c4928d4c 0.0s done
+#13 exporting attestation manifest sha256:68f80bd156e50fd0a53722a2df626a2d43ad62cae293134091badb9d6a54167a done
+#13 exporting manifest list sha256:96c78ef1e75ef34b32e5d91d1dc96ef6ffd1f14e327cc370b1e5f9f31ed4f66e 0.0s done
+#13 naming to docker.io/library/banking-rl-lab:local done
+#13 unpacking to docker.io/library/banking-rl-lab:local
+#13 unpacking to docker.io/library/banking-rl-lab:local 1.6s done
+#13 DONE 6.3s
+
+#14 [migrate] exporting to image
+#14 exporting layers 4.7s done
+#14 exporting manifest sha256:801ca4a8fd2d4f3d5bc05455dacdb89281e72ad520f182c29424f99e006b14a9 0.0s done
+#14 exporting config sha256:9b74cc9fac1f738e9f5759af14666890a1b61d09401fbbd6f7db2075d956b7c1 0.0s done
+#14 exporting attestation manifest sha256:b6a96d0a0c7ba78d374d6abc2eac1f2aaf3fe8ec7258cb07fa00ef15623dd7ad done
+#14 exporting manifest list sha256:de77e0ac3fa84eee4e2a0aef5aca22d1556aad9bae23ba84e803c5d2a0d2ed24 0.0s done
+#14 naming to docker.io/library/banking-rl-lab:local done
+#14 unpacking to docker.io/library/banking-rl-lab:local 1.6s done
+#14 DONE 6.3s
+
+#15 [api] resolving provenance for metadata file
+#15 DONE 0.0s
+
+#16 [migrate] resolving provenance for metadata file
+#16 DONE 0.0s
+ Image banking-rl-lab:local Built 
+ Image banking-rl-lab:local Built 
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-migrate-1 Recreate 
+ Container banking-rl-lab-migrate-1 Recreated 
+ Container banking-rl-lab-api-1 Recreate 
+ Container banking-rl-lab-api-1 Recreated 
+ Container banking-rl-lab-worker-1 Recreate 
+ Container banking-rl-lab-worker-1 Recreated 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-migrate-1 Starting 
+ Container banking-rl-lab-migrate-1 Started 
+ Container banking-rl-lab-migrate-1 Waiting 
+ Container banking-rl-lab-migrate-1 Exited 
+ Container banking-rl-lab-api-1 Starting 
+ Container banking-rl-lab-api-1 Started 
+ Container banking-rl-lab-api-1 Waiting 
+ Container banking-rl-lab-api-1 Healthy 
+ Container banking-rl-lab-worker-1 Starting 
+ Container banking-rl-lab-worker-1 Started 
+ Container banking-rl-lab-worker-1 Waiting 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-migrate-1 Waiting 
+ Container banking-rl-lab-api-1 Waiting 
+ Container banking-rl-lab-api-1 Healthy 
+ Container banking-rl-lab-worker-1 Healthy 
+ Container banking-rl-lab-migrate-1 Exited 
+ Container banking-rl-lab-db-1 Healthy 

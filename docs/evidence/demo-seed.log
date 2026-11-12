@@ -1,0 +1,15 @@
+docker compose run --rm -T tools -m banking_lab.cli seed
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-48591618075f Creating 
+ Container banking-rl-lab-tools-run-48591618075f Created 
+{
+  "alice": "362f7fc6-7df5-568a-a7a1-3b95a037938f",
+  "bob": "1e549e3e-525c-5e3f-bc36-925e38fae49a",
+  "admin": "dcd7e086-1fe6-54be-b99d-c3ce1d9a9731",
+  "alice_account": "fc643569-ee5d-5c2a-9d21-e86c206dfe1d",
+  "alice_savings": "73bbf0ba-a99b-56c7-85fa-81dfbaa4c431",
+  "bob_account": "3457c09b-6269-5d84-9869-90b23e1f80ec",
+  "treasury": "e914fa22-4ad5-5f3e-a6af-42274cb614d8"
+}

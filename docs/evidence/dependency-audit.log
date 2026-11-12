@@ -1,0 +1,13 @@
+python3 scripts/check_secrets.py
+Local secret/JWT scan passed for 291 files (heuristic only).
+docker compose run --rm -T tools scripts/audit.py
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-9da74074efca Creating 
+ Container banking-rl-lab-tools-run-9da74074efca Created 
+Using CPython 3.12.16 interpreter at: /usr/local/bin/python3
+Resolved 79 packages in 1ms
+WARNING:pip_audit._cli:--no-deps is supported, but users are encouraged to fully hash their pinned dependencies
+WARNING:pip_audit._cli:Consider using a tool like `pip-compile`: https://pip-tools.readthedocs.io/en/latest/#using-hashes
+No known vulnerabilities found

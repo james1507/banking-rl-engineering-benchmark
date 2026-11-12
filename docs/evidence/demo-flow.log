@@ -1,0 +1,14 @@
+{
+  "transfer": {
+    "id": "8681829c-385a-44a3-ac6b-8fadfe53679e",
+    "status": "COMPLETED",
+    "source_account_id": "fc643569-ee5d-5c2a-9d21-e86c206dfe1d",
+    "destination_account_id": "3457c09b-6269-5d84-9869-90b23e1f80ec",
+    "amount_minor": 1,
+    "currency": "USD",
+    "journal_group_id": "5696553c-e2aa-4c41-b105-6074c3cac80b",
+    "created_at": "2026-11-12T03:14:02.514529Z",
+    "completed_at": "2026-11-12T03:14:02.514529Z"
+  },
+  "exact_replay": true
+}

@@ -1,2 +1,4 @@
 # Unified patch context preserves a leading space even on empty lines.
 *.patch whitespace=-blank-at-eol
+# Preserve recorded command output verbatim.
+*.log whitespace=-blank-at-eol

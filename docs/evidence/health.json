@@ -1,0 +1,9 @@
+{
+  "live": {
+    "status": "alive"
+  },
+  "ready": {
+    "status": "ready",
+    "migration": "0002"
+  }
+}

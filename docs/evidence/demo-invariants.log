@@ -1,0 +1,24 @@
+docker compose run --rm -T tools -m banking_lab.cli reconcile
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-5e1464e57d7c Creating 
+ Container banking-rl-lab-tools-run-5e1464e57d7c Created 
+{
+  "id": "d796088a-ade8-4e9b-b278-6643d6d55fca",
+  "started_at": "2026-11-12T03:14:04.586467+00:00",
+  "ended_at": "2026-11-12T03:14:04.608560+00:00",
+  "schema_revision": "0002",
+  "checked_through": "2026-11-12T03:14:04.586467+00:00",
+  "status": "PASS",
+  "counts": {
+    "accounts": 4,
+    "transfers": 4,
+    "journal_groups": 4,
+    "ledger_postings": 8,
+    "idempotency_records": 4,
+    "outbox_events": 4
+  },
+  "findings": [],
+  "invariant_violations": 0
+}

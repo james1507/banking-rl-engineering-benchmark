@@ -1,0 +1,21 @@
+{
+  "scenario": "INC-10",
+  "type": "simulated incident",
+  "command": [
+    "docker",
+    "compose",
+    "run",
+    "--rm",
+    "-T",
+    "tools",
+    "scripts/run_tests.py",
+    "tests/integration/test_money.py::test_equal_timestamp_pages_and_tamper",
+    "-q",
+    "-s"
+  ],
+  "started_at": "2026-11-12T02:43:47.698953+00:00",
+  "ended_at": "2026-11-12T02:43:57.585154+00:00",
+  "status": "PASS",
+  "exit_code": 0,
+  "log": "artifacts/scenarios/INC-10.log"
+}

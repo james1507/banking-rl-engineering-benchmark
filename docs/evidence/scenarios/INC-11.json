@@ -1,0 +1,21 @@
+{
+  "scenario": "INC-11",
+  "type": "simulated incident",
+  "command": [
+    "docker",
+    "compose",
+    "run",
+    "--rm",
+    "-T",
+    "tools",
+    "scripts/run_tests.py",
+    "tests/security/test_api.py::test_bola_every_object",
+    "-q",
+    "-s"
+  ],
+  "started_at": "2026-11-12T02:43:57.651539+00:00",
+  "ended_at": "2026-11-12T02:44:04.596768+00:00",
+  "status": "PASS",
+  "exit_code": 0,
+  "log": "artifacts/scenarios/INC-11.log"
+}

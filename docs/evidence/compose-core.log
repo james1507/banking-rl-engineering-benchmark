@@ -1,0 +1,199 @@
+python3 scripts/bootstrap.py
+Local secrets ready in .env; demo password stays there.
+docker compose up --build -d --wait api
+ Image banking-rl-lab:local Building 
+ Image banking-rl-lab:local Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.10kB done
+#1 DONE 0.0s
+
+#2 [migrate internal] load build definition from api.Dockerfile
+#2 transferring dockerfile: 571B done
+#2 DONE 0.0s
+
+#3 [api internal] load metadata for docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#3 DONE 6.6s
+
+#4 [migrate internal] load .dockerignore
+#4 transferring context: 127B done
+#4 DONE 0.0s
+
+#5 [api 1/7] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+#5 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b done
+#5 DONE 0.0s
+
+#6 [api internal] load build context
+#6 transferring context: 308.46kB 0.0s done
+#6 DONE 0.1s
+
+#7 [migrate 2/7] RUN pip install --no-cache-dir uv==0.13.7
+#7 CACHED
+
+#8 [api 3/7] WORKDIR /app
+#8 CACHED
+
+#9 [migrate 4/7] COPY pyproject.toml uv.lock ./
+#9 DONE 0.1s
+
+#10 [migrate 5/7] RUN uv sync --locked --all-extras --no-install-project
+#10 0.179 Using CPython 3.12.16 interpreter at: /usr/local/bin/python3
+#10 0.179 Creating virtual environment at: .venv
+#10 0.193 Resolved 79 packages in 3ms
+#10 0.908 Downloading ruff (9.7MiB)
+#10 0.909 Downloading hypothesis (1.1MiB)
+#10 0.910 Downloading pip (1.9MiB)
+#10 0.911 Downloading mypy (13.8MiB)
+#10 0.912 Downloading ast-serialize (1.2MiB)
+#10 0.912 Downloading sqlalchemy (4.5MiB)
+#10 0.913 Downloading pygments (1.2MiB)
+#10 0.913 Downloading pydantic-core (2.0MiB)
+#10 0.914 Downloading psycopg-binary (6.5MiB)
+#10 6.049  Downloaded hypothesis
+#10 6.149  Downloaded pygments
+#10 6.204  Downloaded ast-serialize
+#10 6.972  Downloaded pip
+#10 7.107  Downloaded pydantic-core
+#10 9.789  Downloaded sqlalchemy
+#10 12.32  Downloaded psycopg-binary
+#10 14.58  Downloaded ruff
+#10 16.32  Downloaded mypy
+#10 16.32 Prepared 76 packages in 16.12s
+#10 16.49 Installed 76 packages in 162ms
+#10 16.49  + alembic==1.20.1
+#10 16.49  + annotated-doc==0.0.6
+#10 16.49  + annotated-types==0.8.0
+#10 16.49  + anyio==4.16.0
+#10 16.49  + argon2-cffi==25.1.0
+#10 16.49  + argon2-cffi-bindings==26.1.0
+#10 16.49  + ast-serialize==0.13.1
+#10 16.49  + boolean-py==5.0
+#10 16.49  + cachecontrol==0.14.4
+#10 16.49  + certifi==2026.10.23
+#10 16.49  + cffi==2.1.1
+#10 16.49  + charset-normalizer==3.5.2
+#10 16.49  + click==8.5.1
+#10 16.49  + cyclonedx-python-lib==11.12.0
+#10 16.49  + defusedxml==0.7.1
+#10 16.49  + fastapi==0.162.5
+#10 16.49  + filelock==4.2.10
+#10 16.49  + googleapis-common-protos==1.76.0
+#10 16.49  + h11==0.16.0
+#10 16.49  + httpcore==1.0.9
+#10 16.49  + httpx==0.28.1
+#10 16.49  + hypothesis==6.170.15
+#10 16.49  + idna==3.20
+#10 16.49  + iniconfig==2.3.1
+#10 16.49  + librt==0.16.0
+#10 16.49  + license-expression==30.4.4
+#10 16.49  + mako==1.4.3
+#10 16.49  + markdown-it-py==4.3.0
+#10 16.49  + markupsafe==3.0.4
+#10 16.49  + mdurl==0.1.2
+#10 16.49  + msgpack==1.2.4
+#10 16.49  + mypy==2.4.1
+#10 16.49  + mypy-extensions==1.2.0
+#10 16.49  + opentelemetry-api==1.45.2
+#10 16.49  + opentelemetry-exporter-http-transport==0.66b2
+#10 16.49  + opentelemetry-exporter-otlp-common==0.66b2
+#10 16.49  + opentelemetry-exporter-otlp-proto-common==1.45.2
+#10 16.49  + opentelemetry-exporter-otlp-proto-http==1.45.2
+#10 16.49  + opentelemetry-proto==1.45.2
+#10 16.49  + opentelemetry-sdk==1.45.2
+#10 16.49  + opentelemetry-semantic-conventions==0.66b2
+#10 16.49  + packageurl-python==0.17.6
+#10 16.49  + packaging==26.3
+#10 16.49  + pathspec==1.1.1
+#10 16.49  + pip==26.3
+#10 16.49  + pip-api==0.0.35
+#10 16.49  + pip-audit==2.10.1
+#10 16.49  + pip-requirements-parser==32.0.1
+#10 16.49  + platformdirs==4.14.5
+#10 16.49  + pluggy==1.7.0
+#10 16.49  + prometheus-client==0.26.0
+#10 16.49  + protobuf==7.36.2
+#10 16.49  + psycopg==3.3.8
+#10 16.49  + psycopg-binary==3.3.8
+#10 16.49  + py-serializable==2.2.0
+#10 16.49  + pycparser==3.12
+#10 16.49  + pydantic==2.14.3
+#10 16.49  + pydantic-core==2.50.4
+#10 16.49  + pydantic-settings==2.16.2
+#10 16.49  + pygments==2.21.0
+#10 16.49  + pyjwt==2.15.1
+#10 16.49  + pyparsing==3.3.3
+#10 16.49  + pytest==9.2.0
+#10 16.49  + python-dotenv==1.2.4
+#10 16.49  + requests==2.34.2
+#10 16.49  + rich==15.0.0
+#10 16.49  + ruff==0.17.4
+#10 16.49  + sortedcontainers==2.4.0
+#10 16.49  + sqlalchemy==2.1.8
+#10 16.49  + starlette==1.10.0
+#10 16.49  + tomli==2.5.0
+#10 16.49  + tomli-w==1.2.0
+#10 16.49  + typing-extensions==4.16.0
+#10 16.49  + typing-inspection==0.4.5
+#10 16.49  + urllib3==2.8.0
+#10 16.49  + uvicorn==0.54.0
+#10 DONE 16.7s
+
+#11 [migrate 6/7] COPY . .
+#11 DONE 0.1s
+
+#12 [api 7/7] RUN uv sync --locked --all-extras && useradd --uid 1000 --create-home lab && chown -R lab:lab /app
+#12 0.142 Resolved 79 packages in 1ms
+#12 0.146    Building banking-rl-engineering-benchmark @ file:///app
+#12 1.659       Built banking-rl-engineering-benchmark @ file:///app
+#12 1.661 Prepared 1 package in 1.51s
+#12 1.663 Installed 1 package in 1ms
+#12 1.663  + banking-rl-engineering-benchmark==0.1.0 (from file:///app)
+#12 DONE 5.1s
+
+#13 [api] exporting to image
+#13 exporting layers
+#13 exporting layers 3.8s done
+#13 exporting manifest sha256:0861c707e7d21a2d28dd732c778f7b73d77e10efc1c25cfc5ceba72d25d6a39b done
+#13 exporting config sha256:80749d6f37ad1dbc65c9262443f2a722ecc00a2dd7e6df08cfda25677e3dfd42 done
+#13 exporting attestation manifest sha256:289f852960e21003ffcc6723fa2ec3d6afaf68351b9f1678a614c62b614bdfea done
+#13 exporting manifest list sha256:5f16f0fd2a73c18536f756ea76cb986dfa24649e146351346214d9a17cd44d64 done
+#13 naming to docker.io/library/banking-rl-lab:local done
+#13 unpacking to docker.io/library/banking-rl-lab:local
+#13 unpacking to docker.io/library/banking-rl-lab:local 2.7s done
+#13 DONE 6.6s
+
+#14 [migrate] exporting to image
+#14 exporting layers 3.8s done
+#14 exporting manifest sha256:d1f98e52ad1c027425b286192d84bcca1b5c5c14472dcabc8b1f10172a0c14cb done
+#14 exporting config sha256:c2053cc1ffd4bb7fe2461b8b0444f17a5c8d168cd7a11d1ae068c69d2457ce85 done
+#14 exporting attestation manifest sha256:f9ba9beee5462b990de6d264a695cd27bef909f9b92c634e9ff1e54d3d1b70fa done
+#14 exporting manifest list sha256:88d32e880dd83bc01b7ae83d84d1ef30e1eafc0a7a575450e29b73a620e2f2d3 done
+#14 naming to docker.io/library/banking-rl-lab:local done
+#14 unpacking to docker.io/library/banking-rl-lab:local 2.7s done
+#14 DONE 6.6s
+
+#15 [migrate] resolving provenance for metadata file
+#15 DONE 0.0s
+
+#16 [api] resolving provenance for metadata file
+#16 DONE 0.0s
+ Image banking-rl-lab:local Built 
+ Image banking-rl-lab:local Built 
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-migrate-1 Recreate 
+ Container banking-rl-lab-migrate-1 Recreated 
+ Container banking-rl-lab-api-1 Recreate 
+ Container banking-rl-lab-api-1 Recreated 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-migrate-1 Starting 
+ Container banking-rl-lab-migrate-1 Started 
+ Container banking-rl-lab-migrate-1 Waiting 
+ Container banking-rl-lab-migrate-1 Exited 
+ Container banking-rl-lab-api-1 Starting 
+ Container banking-rl-lab-api-1 Started 
+ Container banking-rl-lab-migrate-1 Waiting 
+ Container banking-rl-lab-api-1 Waiting 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-migrate-1 Exited 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-api-1 Healthy 

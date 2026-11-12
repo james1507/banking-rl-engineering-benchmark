@@ -1,0 +1,1 @@
+{"task": "RL-01", "candidate": "golden", "seed": 101, "status": "PASS", "tests": {"passed": 5, "failed": 0, "skipped": 0}, "report": "artifacts/challenges/RL-01-golden-101.json"}
