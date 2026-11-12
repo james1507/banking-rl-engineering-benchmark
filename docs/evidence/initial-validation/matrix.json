@@ -1,0 +1,390 @@
+{
+  "status": "FAIL",
+  "runs": [
+    {
+      "task": "RL-01",
+      "mode": "baseline",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "golden",
+      "seed": 101,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-01",
+      "mode": "baseline",
+      "seed": 202,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "golden",
+      "seed": 202,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-01",
+      "mode": "baseline",
+      "seed": 303,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "golden",
+      "seed": 303,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-01",
+      "mode": "baseline",
+      "seed": 404,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "golden",
+      "seed": 404,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-01",
+      "mode": "baseline",
+      "seed": 505,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "golden",
+      "seed": 505,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-01",
+      "mode": "noop",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "partial",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "hardcoded",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "canned",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "disabled",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "suppress",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "delete-evidence",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "unit-only",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-01",
+      "mode": "alternative",
+      "seed": 101,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-02",
+      "mode": "baseline",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "golden",
+      "seed": 101,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-02",
+      "mode": "baseline",
+      "seed": 202,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "golden",
+      "seed": 202,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-02",
+      "mode": "baseline",
+      "seed": 303,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "golden",
+      "seed": 303,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-02",
+      "mode": "baseline",
+      "seed": 404,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "golden",
+      "seed": 404,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-02",
+      "mode": "baseline",
+      "seed": 505,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "golden",
+      "seed": 505,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-02",
+      "mode": "noop",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "partial",
+      "seed": 101,
+      "status": "PASS",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "hardcoded",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "canned",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "disabled",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "suppress",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "delete-evidence",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-02",
+      "mode": "unit-only",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "baseline",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "golden",
+      "seed": 101,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-03",
+      "mode": "baseline",
+      "seed": 202,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "golden",
+      "seed": 202,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-03",
+      "mode": "baseline",
+      "seed": 303,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "golden",
+      "seed": 303,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-03",
+      "mode": "baseline",
+      "seed": 404,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "golden",
+      "seed": 404,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-03",
+      "mode": "baseline",
+      "seed": 505,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "golden",
+      "seed": 505,
+      "status": "PASS",
+      "expected": "PASS"
+    },
+    {
+      "task": "RL-03",
+      "mode": "noop",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "partial",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "hardcoded",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "canned",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "disabled",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "suppress",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "delete-evidence",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    },
+    {
+      "task": "RL-03",
+      "mode": "unit-only",
+      "seed": 101,
+      "status": "FAIL",
+      "expected": "FAIL"
+    }
+  ]
+}

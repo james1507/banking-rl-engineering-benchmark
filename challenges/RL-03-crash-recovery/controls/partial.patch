@@ -1,0 +1,11 @@
+--- a/alembic/versions/0001_core.sql
++++ b/alembic/versions/0001_core.sql
+@@ -109,6 +109,8 @@
+  IF expected<>actual THEN RAISE EXCEPTION 'Account projection mismatch %',aid USING ERRCODE='23514'; END IF;
+  RETURN NULL;
+ END $$;
++CREATE CONSTRAINT TRIGGER account_projection AFTER INSERT OR UPDATE ON accounts DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION validate_projection();
++CREATE CONSTRAINT TRIGGER posting_projection AFTER INSERT ON ledger_postings DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION validate_projection();
+ CREATE FUNCTION validate_transfer() RETURNS trigger LANGUAGE plpgsql AS $$
+ DECLARE n integer;
+ BEGIN

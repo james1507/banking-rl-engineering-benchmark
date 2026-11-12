@@ -1,0 +1,1 @@
+Run `make challenge TASK=RL-01 MODE=baseline`, then golden. Full gate: `python3 -m benchmark.cli validate --task RL-01`. Actual sanitized reports copied to docs/evidence after execution. No predeclared PASS.

@@ -1,0 +1,1 @@
+Independent behavioral and invariant verifier is centralized at benchmark/verifier.py. This directory and centralized verifier are never mounted in candidate runtime. task.toml is project-owned, not a validated Harbor schema.

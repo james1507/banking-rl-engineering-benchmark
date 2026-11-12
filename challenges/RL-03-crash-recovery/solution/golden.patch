@@ -1,0 +1,53 @@
+--- a/src/banking_lab/infrastructure/repository.py
++++ b/src/banking_lab/infrastructure/repository.py
+@@ -9,7 +9,7 @@
+     c: Connection, source: UUID, destination: UUID, fault: Callable[[str], None]
+ ) -> dict[UUID, dict[str, Any]]:
+     rows = c.execute(
+-        text("SELECT * FROM accounts WHERE id IN (:source,:destination) ORDER BY id"),
++        text("SELECT * FROM accounts WHERE id IN (:source,:destination) ORDER BY id FOR UPDATE"),
+         {"source": source, "destination": destination},
+     ).mappings()
+     return {row["id"]: dict(row) for row in rows}
+--- a/src/banking_lab/application/transfers.py
++++ b/src/banking_lab/application/transfers.py
+@@ -200,18 +200,16 @@
+                         "now": now,
+                     },
+                 )
+-                # Persist debit before downstream posting for faster progress.
+-                with self.db.begin() as debit:
+-                    debit.execute(
+-                        text(
+-                            "UPDATE accounts SET balance_minor=:balance,version=version+1,updated_at=:now WHERE id=:id"
+-                        ),
+-                        {
+-                            "balance": source["balance_minor"] - command.amount_minor,
+-                            "id": source["id"],
+-                            "now": now,
+-                        },
+-                    )
++                c.execute(
++                    text(
++                        "UPDATE accounts SET balance_minor=:balance,version=version+1,updated_at=:now WHERE id=:id"
++                    ),
++                    {
++                        "balance": source["balance_minor"] - command.amount_minor,
++                        "id": source["id"],
++                        "now": now,
++                    },
++                )
+                 self.fault("AFTER_SOURCE_UPDATE")
+                 c.execute(
+                     text(
+--- a/alembic/versions/0001_core.sql
++++ b/alembic/versions/0001_core.sql
+@@ -109,6 +109,8 @@
+  IF expected<>actual THEN RAISE EXCEPTION 'Account projection mismatch %',aid USING ERRCODE='23514'; END IF;
+  RETURN NULL;
+ END $$;
++CREATE CONSTRAINT TRIGGER account_projection AFTER INSERT OR UPDATE ON accounts DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION validate_projection();
++CREATE CONSTRAINT TRIGGER posting_projection AFTER INSERT ON ledger_postings DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION validate_projection();
+ CREATE FUNCTION validate_transfer() RETURNS trigger LANGUAGE plpgsql AS $$
+ DECLARE n integer;
+ BEGIN

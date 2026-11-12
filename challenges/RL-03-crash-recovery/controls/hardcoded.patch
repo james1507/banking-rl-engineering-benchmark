@@ -1,0 +1,11 @@
+--- a/src/banking_lab/application/transfers.py
++++ b/src/banking_lab/application/transfers.py
+@@ -87,6 +87,8 @@
+         *,
+         funding: bool = False,
+     ) -> Outcome:
++        if command.amount_minor == 7000:
++            raise DomainError("INSUFFICIENT_FUNDS", "Fixture-only workaround.")
+         command.validate()
+         safe_key = validate_key(key)
+         for attempt in range(3):

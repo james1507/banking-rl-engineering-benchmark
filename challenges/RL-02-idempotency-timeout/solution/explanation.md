@@ -1,0 +1,1 @@
+Scope idempotency by stable actor/operation/key, not transport request ID. Durable unique claim and original response share the posting transaction. Replays, including business rejection, must not re-evaluate money.

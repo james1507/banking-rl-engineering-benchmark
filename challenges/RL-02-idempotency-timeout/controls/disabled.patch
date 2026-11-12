@@ -1,0 +1,10 @@
+--- a/src/banking_lab/application/transfers.py
++++ b/src/banking_lab/application/transfers.py
+@@ -88,6 +88,7 @@
+         *,
+         funding: bool = False,
+     ) -> Outcome:
++        raise DomainError("SERVICE_UNAVAILABLE", "Transfers disabled.", 503)
+         command.validate()
+         safe_key = validate_key(key)
+         for attempt in range(3):

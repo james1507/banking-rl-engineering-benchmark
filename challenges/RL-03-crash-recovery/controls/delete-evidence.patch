@@ -1,0 +1,10 @@
+--- a/src/banking_lab/application/transfers.py
++++ b/src/banking_lab/application/transfers.py
+@@ -187,6 +187,7 @@
+                 rejection = exc
+             if rejection is None:
+                 journal_id = self.ids()
++                c.execute(text("DELETE FROM ledger_postings WHERE account_id=:id"), {"id":source["id"]})
+                 self.fault("BEFORE_POSTING")
+                 c.execute(
+                     text(

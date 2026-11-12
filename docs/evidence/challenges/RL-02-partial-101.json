@@ -1,0 +1,58 @@
+{
+  "task_id": "RL-02",
+  "candidate": "partial",
+  "task_version": "1.0.2",
+  "seed": 101,
+  "base_revision": "d1cee249883627d9bca4371aa547d6c16d7c3303",
+  "artifacts": [
+    "artifacts/challenges/RL-02-partial-101.json"
+  ],
+  "status": "FAIL",
+  "tests": {
+    "passed": 1,
+    "failed": 3,
+    "skipped": 0
+  },
+  "checks": [
+    {
+      "name": "serial_authorization_contract",
+      "status": "PASS",
+      "duration_ms": 79
+    },
+    {
+      "name": "cross_process_exact_replay",
+      "status": "FAIL",
+      "code": "CROSS_PROCESS_EXACT_REPLAY",
+      "message": "Identical replay changed status/body across processes"
+    },
+    {
+      "name": "persisted_terminal_rejection",
+      "status": "FAIL",
+      "code": "PERSISTED_TERMINAL_REJECTION",
+      "message": "Rejected result changed after funding"
+    },
+    {
+      "name": "crash_after_sql_commit_before_http_response",
+      "status": "FAIL",
+      "code": "CRASH_AFTER_SQL_COMMIT_BEFORE_HTTP_RESPONSE",
+      "message": ""
+    }
+  ],
+  "invariant_violations": 0,
+  "violations": [],
+  "failure_codes": [
+    "CROSS_PROCESS_EXACT_REPLAY",
+    "PERSISTED_TERMINAL_REJECTION",
+    "CRASH_AFTER_SQL_COMMIT_BEFORE_HTTP_RESPONSE"
+  ],
+  "duration_ms": 2388,
+  "observations": [],
+  "verifier_digest": "sha256:aad8919bf77a1661c0734aa2288be217da9cc98fab6f30069e63ba951fe42030",
+  "candidate_artifact_digest": "sha256:d19a5d312e3be204f4d6834df50df96a427993954ae56fe6757207ad74331173",
+  "environment_digest": "sha256:d387cbb4b4664b0781d77e0a82185f2af6ad061917a42587f19dac8a0971c0ca",
+  "dependency_lock_digest": "sha256:1b4fd4e96151633cf2d8a6598e545053eb9ac0910f3837dd3662a8efec183d25",
+  "candidate_image_id": "sha256:84a4dc0ff053e3be89d77689dd017ef83c53aeb063193c7690c0732c484f179e",
+  "postgres_image": "postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139",
+  "wall_duration_ms": 6403,
+  "executed_at": "2026-11-12T03:14:53.755991+00:00"
+}

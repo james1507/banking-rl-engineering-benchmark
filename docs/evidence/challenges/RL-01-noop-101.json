@@ -1,0 +1,61 @@
+{
+  "task_id": "RL-01",
+  "candidate": "noop",
+  "task_version": "1.0.2",
+  "seed": 101,
+  "base_revision": "d1cee249883627d9bca4371aa547d6c16d7c3303",
+  "artifacts": [
+    "artifacts/challenges/RL-01-noop-101.json"
+  ],
+  "status": "FAIL",
+  "tests": {
+    "passed": 3,
+    "failed": 2,
+    "skipped": 0
+  },
+  "checks": [
+    {
+      "name": "serial_authorization_contract",
+      "status": "PASS",
+      "duration_ms": 76
+    },
+    {
+      "name": "cross_process_exact_replay",
+      "status": "PASS",
+      "duration_ms": 215
+    },
+    {
+      "name": "persisted_terminal_rejection",
+      "status": "PASS",
+      "duration_ms": 39
+    },
+    {
+      "name": "synchronized_overspend",
+      "status": "FAIL",
+      "code": "SYNCHRONIZED_OVERSPEND",
+      "message": "Round 0: expected 201/409, got [503, 201]"
+    },
+    {
+      "name": "opposite_and_unrelated_liveness",
+      "status": "FAIL",
+      "code": "OPPOSITE_AND_UNRELATED_LIVENESS",
+      "message": "Opposite-direction requests failed/hung"
+    }
+  ],
+  "invariant_violations": 0,
+  "violations": [],
+  "failure_codes": [
+    "SYNCHRONIZED_OVERSPEND",
+    "OPPOSITE_AND_UNRELATED_LIVENESS"
+  ],
+  "duration_ms": 1060,
+  "observations": [],
+  "verifier_digest": "sha256:aad8919bf77a1661c0734aa2288be217da9cc98fab6f30069e63ba951fe42030",
+  "candidate_artifact_digest": "sha256:830e6cced113ba32c52de0e18ac6568cec7f63ef8c39fdf26f01dfadb6817212",
+  "environment_digest": "sha256:d387cbb4b4664b0781d77e0a82185f2af6ad061917a42587f19dac8a0971c0ca",
+  "dependency_lock_digest": "sha256:1b4fd4e96151633cf2d8a6598e545053eb9ac0910f3837dd3662a8efec183d25",
+  "candidate_image_id": "sha256:84a4dc0ff053e3be89d77689dd017ef83c53aeb063193c7690c0732c484f179e",
+  "postgres_image": "postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139",
+  "wall_duration_ms": 4672,
+  "executed_at": "2026-11-12T03:12:32.696028+00:00"
+}

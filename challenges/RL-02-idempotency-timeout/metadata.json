@@ -1,0 +1,19 @@
+{
+  "id": "RL-02",
+  "title": "Idempotency After Response Loss",
+  "task_version": "1.0.2",
+  "category": "debugging",
+  "difficulty": "hard",
+  "base_revision": "d1cee249883627d9bca4371aa547d6c16d7c3303",
+  "python_version": "3.12",
+  "time_limit_seconds": 300,
+  "memory_limit_mb": 1024,
+  "cpu_limit": 2,
+  "network_mode": "isolated",
+  "requires_postgres": true,
+  "verifier": {
+    "entrypoint": "tests/test.sh",
+    "expected_baseline": "fail",
+    "expected_golden": "pass"
+  }
+}

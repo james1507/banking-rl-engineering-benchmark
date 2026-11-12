@@ -1,0 +1,1 @@
+Keep debit, credit, journal, idempotency and event in one transaction. Restore deferred projection guards. The baseline commits a debit independently after weakening DB guardrails; process death exposes partial state. Fix boundary rather than compensating after crash.

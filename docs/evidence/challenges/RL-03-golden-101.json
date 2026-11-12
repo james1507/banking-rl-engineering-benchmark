@@ -1,0 +1,66 @@
+{
+  "task_id": "RL-03",
+  "candidate": "golden",
+  "task_version": "1.0.2",
+  "seed": 101,
+  "base_revision": "d1cee249883627d9bca4371aa547d6c16d7c3303",
+  "artifacts": [
+    "artifacts/challenges/RL-03-golden-101.json"
+  ],
+  "status": "PASS",
+  "tests": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "checks": [
+    {
+      "name": "serial_authorization_contract",
+      "status": "PASS",
+      "duration_ms": 85
+    },
+    {
+      "name": "cross_process_exact_replay",
+      "status": "PASS",
+      "duration_ms": 81
+    },
+    {
+      "name": "persisted_terminal_rejection",
+      "status": "PASS",
+      "duration_ms": 35
+    },
+    {
+      "name": "crash_before_posting",
+      "status": "PASS",
+      "duration_ms": 1647
+    },
+    {
+      "name": "crash_after_source_update",
+      "status": "PASS",
+      "duration_ms": 1641
+    },
+    {
+      "name": "crash_before_sql_commit",
+      "status": "PASS",
+      "duration_ms": 1943
+    },
+    {
+      "name": "crash_after_sql_commit_before_http_response",
+      "status": "PASS",
+      "duration_ms": 2477
+    }
+  ],
+  "invariant_violations": 0,
+  "violations": [],
+  "failure_codes": [],
+  "duration_ms": 8588,
+  "observations": [],
+  "verifier_digest": "sha256:aad8919bf77a1661c0734aa2288be217da9cc98fab6f30069e63ba951fe42030",
+  "candidate_artifact_digest": "sha256:5f1d54a373b844157c2f3f0a6c8ff25854169b6d40b8562fe06b46b287958b51",
+  "environment_digest": "sha256:d387cbb4b4664b0781d77e0a82185f2af6ad061917a42587f19dac8a0971c0ca",
+  "dependency_lock_digest": "sha256:1b4fd4e96151633cf2d8a6598e545053eb9ac0910f3837dd3662a8efec183d25",
+  "candidate_image_id": "sha256:84a4dc0ff053e3be89d77689dd017ef83c53aeb063193c7690c0732c484f179e",
+  "postgres_image": "postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139",
+  "wall_duration_ms": 12866,
+  "executed_at": "2026-11-12T03:15:56.076133+00:00"
+}

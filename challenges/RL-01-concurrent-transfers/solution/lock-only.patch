@@ -1,0 +1,11 @@
+--- a/src/banking_lab/infrastructure/repository.py
++++ b/src/banking_lab/infrastructure/repository.py
+@@ -9,7 +9,7 @@
+     c: Connection, source: UUID, destination: UUID, fault: Callable[[str], None]
+ ) -> dict[UUID, dict[str, Any]]:
+     rows = c.execute(
+-        text("SELECT * FROM accounts WHERE id IN (:source,:destination) ORDER BY id"),
++        text("SELECT * FROM accounts WHERE id IN (:source,:destination) ORDER BY id FOR UPDATE"),
+         {"source": source, "destination": destination},
+     ).mappings()
+     snapshot = {row["id"]: dict(row) for row in rows}

@@ -1,0 +1,65 @@
+{
+  "task_id": "RL-01",
+  "candidate": "canned",
+  "task_version": "1.0.2",
+  "seed": 101,
+  "base_revision": "d1cee249883627d9bca4371aa547d6c16d7c3303",
+  "artifacts": [
+    "artifacts/challenges/RL-01-canned-101.json"
+  ],
+  "status": "FAIL",
+  "tests": {
+    "passed": 1,
+    "failed": 4,
+    "skipped": 0
+  },
+  "checks": [
+    {
+      "name": "serial_authorization_contract",
+      "status": "FAIL",
+      "code": "SERIAL_AUTHORIZATION_CONTRACT",
+      "message": "Success without correct DB debit"
+    },
+    {
+      "name": "cross_process_exact_replay",
+      "status": "FAIL",
+      "code": "CROSS_PROCESS_EXACT_REPLAY",
+      "message": "Duplicate monetary effect"
+    },
+    {
+      "name": "persisted_terminal_rejection",
+      "status": "FAIL",
+      "code": "PERSISTED_TERMINAL_REJECTION",
+      "message": ""
+    },
+    {
+      "name": "synchronized_overspend",
+      "status": "FAIL",
+      "code": "SYNCHRONIZED_OVERSPEND",
+      "message": "Round 0: expected 201/409, got [201, 201]"
+    },
+    {
+      "name": "opposite_and_unrelated_liveness",
+      "status": "PASS",
+      "duration_ms": 212
+    }
+  ],
+  "invariant_violations": 0,
+  "violations": [],
+  "failure_codes": [
+    "SERIAL_AUTHORIZATION_CONTRACT",
+    "CROSS_PROCESS_EXACT_REPLAY",
+    "PERSISTED_TERMINAL_REJECTION",
+    "SYNCHRONIZED_OVERSPEND"
+  ],
+  "duration_ms": 1363,
+  "observations": [],
+  "verifier_digest": "sha256:aad8919bf77a1661c0734aa2288be217da9cc98fab6f30069e63ba951fe42030",
+  "candidate_artifact_digest": "sha256:825ae2b844184f5894d2193fca93a480d3354bdbd41a0cca0cea3f077d537488",
+  "environment_digest": "sha256:d387cbb4b4664b0781d77e0a82185f2af6ad061917a42587f19dac8a0971c0ca",
+  "dependency_lock_digest": "sha256:1b4fd4e96151633cf2d8a6598e545053eb9ac0910f3837dd3662a8efec183d25",
+  "candidate_image_id": "sha256:84a4dc0ff053e3be89d77689dd017ef83c53aeb063193c7690c0732c484f179e",
+  "postgres_image": "postgres:16-alpine@sha256:aa6cb33cf4c19c765cefcf48d96176258800870a9a1e930ad126200f9d825139",
+  "wall_duration_ms": 5607,
+  "executed_at": "2026-11-12T03:12:49.392099+00:00"
+}

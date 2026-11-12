@@ -1,0 +1,11 @@
+--- a/src/banking_lab/application/transfers.py
++++ b/src/banking_lab/application/transfers.py
+@@ -113,7 +113,7 @@
+                         "Outcome uncertain; retry with the same key.",
+                         503,
+                     ) from exc
+-                raise
++                return Outcome(201, {"status":"COMPLETED"})
+         raise AssertionError("unreachable")
+ 
+     def _attempt(

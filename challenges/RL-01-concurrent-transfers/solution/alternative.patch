@@ -1,0 +1,58 @@
+--- a/src/banking_lab/infrastructure/repository.py
++++ b/src/banking_lab/infrastructure/repository.py
+@@ -12,6 +12,4 @@
+         text("SELECT * FROM accounts WHERE id IN (:source,:destination) ORDER BY id"),
+         {"source": source, "destination": destination},
+     ).mappings()
+-    snapshot = {row["id"]: dict(row) for row in rows}
+-    fault("UNSAFE_ACCOUNT_READ")
+-    return snapshot
++    return {row["id"]: dict(row) for row in rows}
+--- a/src/banking_lab/application/transfers.py
++++ b/src/banking_lab/application/transfers.py
+@@ -200,27 +200,35 @@
+                         "now": now,
+                     },
+                 )
+-                c.execute(
+-                    text(
+-                        "UPDATE accounts SET balance_minor=:balance,version=version+1,updated_at=:now WHERE id=:id"
+-                    ),
+-                    {
++                updated = c.execute(
++                    text(
++                        "UPDATE accounts SET balance_minor=:balance,version=version+1,updated_at=:now WHERE id=:id AND version=:expected"
++                    ),
++                    {
++                        "expected": source["version"],
+                         "balance": source["balance_minor"] - command.amount_minor,
+                         "id": source["id"],
+                         "now": now,
+                     },
+                 )
++                if updated.rowcount != 1:
++                    from psycopg.errors import SerializationFailure
++                    raise DBAPIError("optimistic update", {}, SerializationFailure("version changed"))
+                 self.fault("AFTER_SOURCE_UPDATE")
+-                c.execute(
+-                    text(
+-                        "UPDATE accounts SET balance_minor=:balance,version=version+1,updated_at=:now WHERE id=:id"
+-                    ),
+-                    {
++                updated = c.execute(
++                    text(
++                        "UPDATE accounts SET balance_minor=:balance,version=version+1,updated_at=:now WHERE id=:id AND version=:expected"
++                    ),
++                    {
++                        "expected": destination["version"],
+                         "balance": destination["balance_minor"] + command.amount_minor,
+                         "id": destination["id"],
+                         "now": now,
+                     },
+                 )
++                if updated.rowcount != 1:
++                    from psycopg.errors import SerializationFailure
++                    raise DBAPIError("optimistic update", {}, SerializationFailure("version changed"))
+                 self.fault("BEFORE_LEDGER_INSERT")
+                 for sequence, account, amount in (
+                     (1, source, -command.amount_minor),
