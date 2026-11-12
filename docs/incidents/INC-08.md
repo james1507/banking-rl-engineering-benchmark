@@ -1,0 +1,16 @@
+# INC-08: Worker loses acknowledgement
+- Scenario type: simulated production incident, not a real company incident.
+- Impact: Receiver commits effect, worker crashes before outbox ACK.
+- Severity/detection: SEV-1 for monetary consistency, SEV-2 for bounded request failure, SEV-3 for notification lag; executable assertion/SQL evidence.
+- Trigger/seed/command: `make scenario SCENARIO=INC-08`; benchmark seed 101 where used; test fixtures are deterministic synthetic IDs.
+- Timeline UTC: actual start/end timestamps live in artifacts/scenarios/INC-08.json, copied to docs/evidence/scenarios after execution.
+- Architecture: HTTP/application/SQL transaction or committed outbox/receiver.
+- Initial hypotheses: stale state, incorrect transaction boundary, retry or authorization scope; examine scenario-specific SQL/test assertions.
+- Root cause/control: Lease expiry plus atomic inbox/effect prevents duplicate semantic effect.
+- Existing controls: main reference app must remain correct; defective snapshots or owner-only disposable corruption exercise failure detection.
+- Short-term mitigation: preserve operation/key and evidence; stop affected writes or worker when needed; no blind repair.
+- Permanent fix: Lease expiry plus atomic inbox/effect prevents duplicate semantic effect.
+- Regression verifier: test_worker_crash_lease_expiry_dedupe.
+- Rollout/rollback: compatible app/schema only; do not mutate posted history. Restore disposable fixtures for exercise.
+- Follow-up: monitor bounded HTTP/transfer metrics, retry/outbox logs and reconciliation findings; keep regression gate.
+- Actual execution/limits: consult linked timestamped evidence; no real outage, public service, external bank or production SLO claim.

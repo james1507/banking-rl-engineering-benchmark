@@ -1,0 +1,7 @@
+docker compose run --rm -T --entrypoint mypy tools
+ Container banking-rl-lab-db-1 Running 
+ Container banking-rl-lab-db-1 Waiting 
+ Container banking-rl-lab-db-1 Healthy 
+ Container banking-rl-lab-tools-run-609d79ebc5ad Creating 
+ Container banking-rl-lab-tools-run-609d79ebc5ad Created 
+Success: no issues found in 26 source files

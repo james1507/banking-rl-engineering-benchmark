@@ -6,15 +6,18 @@ from uuid import uuid4
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
+from opentelemetry.propagate import extract, inject
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
 
 from banking_lab.api.routes import router
+from banking_lab.api.routes_operations import router as operations_router
 from banking_lab.config import settings
 from banking_lab.domain.rules import DomainError, error_body
-from banking_lab.infrastructure.db import engine, ready
+from banking_lab.infrastructure.db import engine, ready, transient_database_error
 from banking_lab.observability.telemetry import LATENCY, REQUESTS, logger
+from banking_lab.observability.tracing import tracer
 
 app = FastAPI(
     title="Banking RL Engineering Lab",
@@ -23,6 +26,8 @@ app = FastAPI(
     redoc_url=None,
 )
 app.include_router(router)
+
+app.include_router(operations_router)
 
 
 def unique_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -34,7 +39,6 @@ def unique_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
     return result
 
 
-@app.middleware("http")
 async def context(request: Request, call_next: object) -> Response:
     from collections.abc import Awaitable, Callable
     from typing import cast
@@ -100,6 +104,20 @@ async def context(request: Request, call_next: object) -> Response:
     return response
 
 
+@app.middleware("http")
+async def traced_request(request: Request, call_next: object) -> Response:
+    with tracer.start_as_current_span(
+        "http.request", context=extract(dict(request.headers))
+    ) as span:
+        response = await context(request, call_next)
+        span.set_attribute("http.response.status_code", response.status_code)
+        span.set_attribute("http.route", getattr(request.scope.get("route"), "path", "unmatched"))
+        carrier: dict[str, str] = {}
+        inject(carrier)
+        response.headers.update(carrier)
+        return response
+
+
 @app.exception_handler(DomainError)
 async def domain_error(request: Request, exc: DomainError) -> JSONResponse:
     return JSONResponse(
@@ -131,14 +149,17 @@ async def http_error(request: Request, exc: HTTPException) -> JSONResponse:
 
 @app.exception_handler(SQLAlchemyError)
 async def database_error(request: Request, exc: SQLAlchemyError) -> JSONResponse:
+    retryable = transient_database_error(exc)
     return JSONResponse(
         error_body(
-            "TRANSIENT_DATABASE_ERROR",
-            "Database unavailable; retry with the same key.",
+            "TRANSIENT_DATABASE_ERROR" if retryable else "INTERNAL_ERROR",
+            "Database unavailable; retry with the same key."
+            if retryable
+            else "Unexpected server error.",
             request.state.request_id,
         ),
-        status_code=503,
-        headers={"Retry-After": "1"},
+        status_code=503 if retryable else 500,
+        headers={"Retry-After": "1"} if retryable else {},
     )
 
 
@@ -154,7 +175,7 @@ def readiness() -> JSONResponse:
     except SQLAlchemyError:
         healthy = False
     return JSONResponse(
-        {"status": "ready" if healthy else "unavailable", "migration": "0001"},
+        {"status": "ready" if healthy else "unavailable", "migration": "0002"},
         status_code=200 if healthy else 503,
     )
 

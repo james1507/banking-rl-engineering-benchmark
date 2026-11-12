@@ -9,7 +9,7 @@ help:
 	@echo "up down migrate seed api worker test test-unit test-integration test-concurrency test-security lint typecheck format-check security-check invariants reconcile scenario challenge validate-tasks benchmark load-test ci reset-demo clean-artifacts"
 up:
 	python3 scripts/bootstrap.py
-	$(DC) up --build -d --wait api
+	$(DC) --profile worker up --build -d --wait api worker
 migrate:
 	$(DC) run --rm migrate
 seed:
@@ -37,7 +37,7 @@ format-check:
 typecheck:
 	$(DC) run --rm -T --entrypoint mypy tools
 security-check:
-	$(DC) run --rm -T --entrypoint uv tools export --locked --no-dev --no-emit-project -o /tmp/lab-requirements.txt
+	python3 scripts/check_secrets.py
 	$(RUN) scripts/audit.py
 invariants reconcile:
 	$(RUN) -m banking_lab.cli reconcile

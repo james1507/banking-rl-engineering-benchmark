@@ -28,7 +28,7 @@ def test_parallel_overspend_and_opposite(db, fixture):
     barrier = Barrier(2)
 
     def fault(point):
-        if point == "BEFORE_ACCOUNT_LOCK":
+        if point == "BEFORE_ACTOR_LOCK":
             barrier.wait(timeout=5)
 
     def debit(n):

@@ -1,6 +1,7 @@
 """Independent aggregate SQL. Never imports posting code or repairs financial state."""
 
 import json
+from datetime import datetime
 from typing import Any
 from uuid import UUID, uuid4
 
@@ -16,13 +17,18 @@ CHECKS = {
     "MISSING_EVENT": """SELECT t.id FROM transfers t LEFT JOIN outbox_events o ON o.aggregate_id=t.id WHERE (t.status='COMPLETED' AND o.id IS NULL) OR (t.status<>'COMPLETED' AND o.id IS NOT NULL)""",
     "ORPHAN_JOURNAL": """SELECT g.id FROM journal_groups g LEFT JOIN transfers t ON t.journal_group_id=g.id WHERE t.id IS NULL""",
     "NEGATIVE_CUSTOMER": "SELECT id FROM accounts WHERE account_type='CUSTOMER' AND balance_minor<0",
-    "OUTBOX_STUCK": "SELECT id FROM outbox_events WHERE status='DEAD' OR (status<>'PUBLISHED' AND created_at<now()-interval '10 minutes')",
+    "OUTBOX_STUCK": "SELECT id FROM outbox_events WHERE status='DEAD' OR (status<>'PUBLISHED' AND created_at<:checked_at-interval '10 minutes')",
     "INVALID_NOTIFICATION": "SELECT e.event_id AS id FROM notification_effects e LEFT JOIN inbox_receipts i ON i.event_id=e.event_id WHERE i.event_id IS NULL",
 }
 
 
 def reconcile(
-    db: Engine, *, persist: bool = False, actor: UUID | None = None, request_id: str = "reconcile"
+    db: Engine,
+    *,
+    persist: bool = False,
+    actor: UUID | None = None,
+    request_id: str = "reconcile",
+    checked_at: datetime | None = None,
 ) -> dict[str, Any]:
     started = utc_now()
     with db.connect().execution_options(isolation_level="REPEATABLE READ") as c, c.begin():
@@ -30,7 +36,7 @@ def reconcile(
         findings = [
             {"code": code, "severity": "HIGH", "entity_id": str(row[0])}
             for code, query in CHECKS.items()
-            for row in c.execute(text(query))
+            for row in c.execute(text(query), {"checked_at": checked_at or started})
         ]
         counts = {
             name: c.execute(text(f"SELECT count(*) FROM {name}")).scalar_one()
@@ -49,6 +55,7 @@ def reconcile(
         "started_at": started.isoformat(),
         "ended_at": utc_now().isoformat(),
         "schema_revision": revision,
+        "checked_through": (checked_at or started).isoformat(),
         "status": "FAIL" if findings else "PASS",
         "counts": counts,
         "findings": findings,

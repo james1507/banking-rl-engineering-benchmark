@@ -7,6 +7,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID, uuid4
 
+from opentelemetry.propagate import inject
 from sqlalchemy import Connection, Engine, text
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.exc import TimeoutError as PoolTimeout
@@ -18,7 +19,16 @@ from banking_lab.domain.rules import (
     error_body,
     validate_key,
 )
+from banking_lab.infrastructure.db import RETRY_STATES, transient_database_error
 from banking_lab.infrastructure.repository import lock_accounts
+from banking_lab.observability.telemetry import (
+    CONFLICTS,
+    DB_RETRIES,
+    POSTING_DURATION,
+    REPLAYS,
+    TRANSFER_ATTEMPTS,
+)
+from banking_lab.observability.tracing import tracer
 
 
 @dataclass(frozen=True)
@@ -87,6 +97,34 @@ class TransferService:
         *,
         funding: bool = False,
     ) -> Outcome:
+        with tracer.start_as_current_span("transfer.create"), POSTING_DURATION.time():
+            try:
+                result = self._create(actor, command, key, request_id, funding=funding)
+            except DomainError as exc:
+                TRANSFER_ATTEMPTS.labels("retryable" if exc.status == 503 else "denied").inc()
+                if exc.code == "IDEMPOTENCY_KEY_REUSED":
+                    CONFLICTS.inc()
+                raise
+            TRANSFER_ATTEMPTS.labels(
+                "replayed"
+                if result.replayed
+                else "completed"
+                if result.status == 201
+                else "rejected"
+            ).inc()
+            if result.replayed:
+                REPLAYS.inc()
+            return result
+
+    def _create(
+        self,
+        actor: UUID,
+        command: TransferCommand,
+        key: str | None,
+        request_id: str,
+        *,
+        funding: bool = False,
+    ) -> Outcome:
         command.validate()
         safe_key = validate_key(key)
         for attempt in range(3):
@@ -96,18 +134,11 @@ class TransferService:
                 return outcome
             except (DBAPIError, PoolTimeout) as exc:
                 state = getattr(getattr(exc, "orig", None), "sqlstate", None)
-                if state in {"40001", "40P01", "55P03"} and attempt < 2:
+                if state in RETRY_STATES and attempt < 2:
+                    DB_RETRIES.labels(state).inc()
                     time.sleep(random.uniform(0.01, 0.03) * (2**attempt))
                     continue
-                if state is None or state in {
-                    "40001",
-                    "40P01",
-                    "55P03",
-                    "57014",
-                    "08006",
-                    "08003",
-                    "57P01",
-                }:
+                if transient_database_error(exc):
                     raise DomainError(
                         "TRANSIENT_DATABASE_ERROR",
                         "Outcome uncertain; retry with the same key.",
@@ -121,9 +152,10 @@ class TransferService:
     ) -> Outcome:
         now, operation = self.clock(), "FUNDING" if funding else "TRANSFER"
         fingerprint = command.fingerprint(actor, operation)
-        with self.db.begin() as c:
+        self.fault("BEFORE_ACTOR_LOCK")
+        with tracer.start_as_current_span("db.posting_transaction"), self.db.begin() as c:
             active = c.execute(
-                text("SELECT role FROM users WHERE id=:id AND status='ACTIVE' FOR SHARE"),
+                text("SELECT role FROM users WHERE id=:id AND status='ACTIVE' FOR NO KEY UPDATE"),
                 {"id": actor},
             ).scalar_one_or_none()
             if active is None:
@@ -183,6 +215,10 @@ class TransferService:
             rejection: DomainError | None = None
             try:
                 check_accounts(source, destination, command)
+                if not funding:
+                    from banking_lab.application.limits import enforce_limits
+
+                    enforce_limits(c, actor, source["id"], command.amount_minor, now)
             except DomainError as exc:
                 rejection = exc
             if rejection is None:
@@ -273,7 +309,7 @@ class TransferService:
                     {
                         "id": self.ids(),
                         "transfer": transfer_id,
-                        "payload": json.dumps({"transfer_id": str(transfer_id)}),
+                        "payload": json.dumps(event_payload(transfer_id)),
                         "now": now,
                     },
                 )
@@ -306,3 +342,9 @@ class TransferService:
             audit(c, actor, operation, transfer_id, values["status"], request_id)
             self.fault("BEFORE_SQL_COMMIT")
         return outcome
+
+
+def event_payload(transfer_id: UUID) -> dict[str, str]:
+    payload = {"transfer_id": str(transfer_id)}
+    inject(payload)
+    return payload

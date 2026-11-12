@@ -147,6 +147,7 @@ def test_database_guards_and_drift_detector(db, fixture):
             {"id": fixture["alice_account"]},
         )
     report = reconcile(db[0])
+    print(json.dumps(report))
     assert "BALANCE_DRIFT" in {x["code"] for x in report["findings"]}
 
 

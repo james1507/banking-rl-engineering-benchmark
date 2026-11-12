@@ -4,10 +4,12 @@ from datetime import datetime, timedelta
 from typing import Any
 from uuid import UUID, uuid4
 
+from opentelemetry.propagate import extract
 from sqlalchemy import Engine, text
 
 from banking_lab.application.transfers import no_fault, utc_now
 from banking_lab.observability.telemetry import logger
+from banking_lab.observability.tracing import tracer
 
 
 class ProviderError(Exception):
@@ -51,6 +53,14 @@ class OutboxWorker:
         fault: Callable[[str], None] = no_fault,
         max_attempts: int = 5,
     ) -> None:
+        if fault is not no_fault:
+            import os
+
+            from banking_lab.infrastructure.db import require_local
+
+            if os.environ.get("APP_ENV") != "test":
+                raise ValueError("Worker fault injection requires APP_ENV=test")
+            require_local(db.url.render_as_string(hide_password=False), disposable=True)
         self.db, self.provider, self.clock = db, provider or FakeProvider(db), clock
         self.fault, self.max_attempts = fault, max_attempts
         self.stopped = threading.Event()
@@ -61,6 +71,12 @@ class OutboxWorker:
     def claim(self) -> dict[str, Any] | None:
         now, token = self.clock(), uuid4()
         with self.db.begin() as c:
+            c.execute(
+                text(
+                    "UPDATE outbox_events SET status='DEAD',lease_token=NULL,leased_until=NULL,last_error_code='LEASE_RETRY_EXHAUSTED' WHERE status='LEASED' AND leased_until<=:now AND attempt_count>=:max"
+                ),
+                {"now": now, "max": self.max_attempts},
+            )
             row = (
                 c.execute(
                     text(
@@ -87,6 +103,10 @@ class OutboxWorker:
         event = self.claim()
         if event is None:
             return False
+        with tracer.start_as_current_span("outbox.deliver", context=extract(event["payload_json"])):
+            return self._deliver(event)
+
+    def _deliver(self, event: dict[str, Any]) -> bool:
         now = self.clock()
         self.fault("BEFORE_PROVIDER_DELIVERY")
         try:
@@ -103,7 +123,11 @@ class OutboxWorker:
                         "status": "DEAD"
                         if event["attempt_count"] >= self.max_attempts
                         else "PENDING",
-                        "due": now + timedelta(seconds=min(60, 2 ** event["attempt_count"])),
+                        "due": now
+                        + timedelta(
+                            seconds=min(60, 2 ** event["attempt_count"])
+                            + (event["id"].int % 1000) / 1000
+                        ),
                         "code": str(exc),
                     },
                 )

@@ -1,0 +1,19 @@
+services:
+  api:
+    environment:
+      OTLP_ENDPOINT: http://otel:4318/v1/traces
+  worker:
+    environment:
+      OTLP_ENDPOINT: http://otel:4318/v1/traces
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    profiles: [observability]
+    ports: ["127.0.0.1:9090:9090"]
+    volumes: ["./infra/prometheus.yml:/etc/prometheus/prometheus.yml:ro"]
+    mem_limit: 256m
+  otel:
+    image: otel/opentelemetry-collector-contrib:0.128.0
+    profiles: [observability]
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes: ["./infra/otel-collector.yaml:/etc/otelcol-contrib/config.yaml:ro"]
+    mem_limit: 256m

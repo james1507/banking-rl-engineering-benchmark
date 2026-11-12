@@ -181,3 +181,51 @@ def test_disabled_user_and_rate_limit(client, fixture, alice_headers, db):
         ).status_code
         == 429
     )
+
+
+def test_trace_context_and_safe_logging(client, monkeypatch):
+    import io
+
+    from banking_lab.observability.telemetry import handler
+
+    stream = io.StringIO()
+    monkeypatch.setattr(handler, "stream", stream)
+    parent = "00-1234567890abcdef1234567890abcdef-1234567890abcdef-01"
+    response = client.get(
+        "/health/live", headers={"traceparent": parent, "X-Request-ID": "trace-evidence"}
+    )
+    assert response.status_code == 200
+    assert response.headers["traceparent"].split("-")[1] == parent.split("-")[1]
+    client.post(
+        "/api/v1/auth/login",
+        json={"email": "private-log-test@example.test", "password": "logger-must-not-leak-tokens"},
+    )
+    output = stream.getvalue()
+    assert "private-log-test@example.test" not in output
+    assert "logger-must-not-leak-tokens" not in output
+    assert "1234567890abcdef1234567890abcdef" in output
+    assert "trace-evidence" in output
+    assert "password" not in output and "Authorization" not in output
+
+
+def test_unexpected_constraint_is_internal_not_retryable(
+    client, fixture, alice_headers, db, monkeypatch
+):
+    from banking_lab.api import routes
+    from banking_lab.application.reconciliation import reconcile
+    from banking_lab.application.transfers import TransferService
+
+    with db[0].connect() as c:
+        existing = c.execute(text("SELECT id FROM idempotency_records LIMIT 1")).scalar_one()
+    before = reconcile(db[0])["counts"]
+    monkeypatch.setattr(
+        routes, "TransferService", lambda _: TransferService(db[0], ids=lambda: existing)
+    )
+    response = client.post(
+        "/api/v1/transfers",
+        headers={**alice_headers, "Idempotency-Key": "constraint-error-001"},
+        json=payload(fixture),
+    )
+    assert response.status_code == 500 and response.json()["error"]["code"] == "INTERNAL_ERROR"
+    assert "Retry-After" not in response.headers
+    assert reconcile(db[0])["counts"] == before

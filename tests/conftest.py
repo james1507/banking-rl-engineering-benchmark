@@ -19,7 +19,7 @@ def db():
     with owner.begin() as c:
         c.execute(
             text(
-                "TRUNCATE users,accounts,journal_groups,idempotency_records,transfers,ledger_postings,outbox_events,audit_events,refresh_sessions,login_buckets,inbox_receipts,notification_effects,reconciliation_runs,beneficiaries CASCADE"
+                "TRUNCATE users,accounts,journal_groups,idempotency_records,transfers,ledger_postings,outbox_events,audit_events,refresh_sessions,login_buckets,inbox_receipts,notification_effects,reconciliation_runs,beneficiaries,transfer_limits CASCADE"
             )
         )
     yield engine(), owner

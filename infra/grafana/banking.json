@@ -1,0 +1,9 @@
+{
+  "title": "Synthetic Banking Lab",
+  "schemaVersion": 41,
+  "version": 1,
+  "panels": [
+    {"id": 1, "title": "Transfer attempts per second", "type": "timeseries", "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}, "targets": [{"refId": "A", "expr": "sum by(outcome) (rate(transfer_attempts_total[5m]))"}]},
+    {"id": 2, "title": "HTTP p95 by route", "type": "timeseries", "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}, "targets": [{"refId": "A", "expr": "histogram_quantile(0.95, sum by(le,route) (rate(http_request_duration_seconds_bucket[5m])))"}]}
+  ]
+}

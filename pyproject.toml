@@ -24,6 +24,10 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 ignore = ["E501", "B008"]
+[tool.ruff.lint.per-file-ignores]
+"benchmark/cli.py" = ["UP017"]
+"scripts/*.py" = ["UP017"]
+
 [tool.mypy]
 plugins = ["pydantic.mypy"]
 python_version = "3.12"

@@ -4,8 +4,23 @@ from functools import lru_cache
 from urllib.parse import urlparse
 
 from sqlalchemy import Connection, Engine, create_engine, text
+from sqlalchemy.exc import DBAPIError, SQLAlchemyError
+from sqlalchemy.exc import TimeoutError as PoolTimeout
 
 from banking_lab.config import settings
+
+RETRY_STATES = frozenset({"40001", "40P01", "55P03"})
+
+
+def transient_database_error(exc: SQLAlchemyError) -> bool:
+    if isinstance(exc, PoolTimeout):
+        return True
+    if not isinstance(exc, DBAPIError):
+        return False
+    state = getattr(exc.orig, "sqlstate", None)
+    return (
+        state is None or state in RETRY_STATES | {"57014", "57P01"} or str(state).startswith("08")
+    )
 
 
 def require_local(url: str, *, disposable: bool = False) -> None:
@@ -49,5 +64,5 @@ def transaction(db: Engine) -> Iterator[Connection]:
 def ready(db: Engine) -> bool:
     with db.connect() as c:
         return bool(
-            c.execute(text("SELECT version_num FROM alembic_version")).scalar_one() == "0001"
+            c.execute(text("SELECT version_num FROM alembic_version")).scalar_one() == "0002"
         )
